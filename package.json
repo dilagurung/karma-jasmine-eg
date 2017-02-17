@@ -18,7 +18,16 @@
     "test": "concurrently \"npm run build:watch\" \"karma start karma.conf.js\"",
     "pretest:once": "npm run build",
     "test:once": "karma start karma.conf.js --single-run",
-    "lint": "tslint ./src/**/*.ts -t verbose"
+    "lint": "tslint ./src/**/*.ts -t verbose",
+
+
+    "posttest": "node_modules/.bin/remap-istanbul -i coverage/coverage-final.json -o coverage -t html",
+    "coverage": "http-server -c-1 -o -p 9875 ./coverage",
+    "clean:reports": "rm -rf report",
+
+    "remap-istanbul": "remap-istanbul -i ./report/coverage/coverage-final.json -o ./report/coverage/html-report -t html",
+    "testc": "npm run clean:reports && npm run build && karma start  karma.conf.js && npm run remap-istanbul"
+
   },
   "keywords": [],
   "author": "",
@@ -50,10 +59,13 @@
     "@types/node": "^6.0.46",
     "canonical-path": "0.0.2",
     "concurrently": "^3.2.0",
+    "http-server": "^0.9.0",
+    "istanbul": "^0.4.5",
     "jasmine-core": "~2.4.1",
     "karma": "^1.4.1",
     "karma-chrome-launcher": "^2.0.0",
     "karma-cli": "^1.0.1",
+    "karma-coverage": "^1.1.1",
     "karma-html-reporter": "^0.2.7",
     "karma-jasmine": "^1.0.2",
     "karma-jasmine-html-reporter": "^0.2.2",
@@ -61,6 +73,7 @@
     "lodash": "^4.16.4",
     "protractor": "~4.0.14",
     "reflect-metadata": "^0.1.9",
+    "remap-istanbul": "^0.9.1",
     "rimraf": "^2.5.4",
     "systemjs": "^0.19.40",
     "tslint": "^3.15.1",

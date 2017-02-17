@@ -12,12 +12,22 @@ module.exports = function(config) {
   config.set({
     basePath: '',
     frameworks: ['jasmine'],
-/*
     plugins: [
       require('karma-jasmine'),
       require('karma-chrome-launcher'),
+      'karma-coverage',
       require('karma-jasmine-html-reporter')
-    ],*/
+    ],
+/*
+
+    // Karma plugins loaded
+    plugins: [
+      'karma-jasmine',
+      'karma-coverage',
+
+      'karma-chrome-launcher'
+    ],
+*/
 
     client: {
       builtPaths: [appBase, appSrcBase,testingBase], // add more spec base paths as needed
@@ -97,8 +107,23 @@ module.exports = function(config) {
     },
 
     exclude: [],
-    preprocessors: {},
-    reporters: ['progress', 'kjhtml'],
+    preprocessors: {
+      'dist/**/!(*spec).js': ['coverage']
+    },
+    reporters: ['progress','dots', 'kjhtml','coverage'],
+    //reporters: ['progress',  'coverage'],
+   /* coverageReporter: {
+      dir: 'report/',
+      reporters: [
+        {type: 'json', subdir: 'coverage'}
+      ]
+    },*/
+    coverageReporter: {
+      reporters:[
+        {type: 'json', subdir: '.', file: 'coverage-final.json'}
+      ]
+    },
+
 
     port: 9876,
     colors: true,
